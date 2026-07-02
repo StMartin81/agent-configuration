@@ -60,6 +60,9 @@ behavior:
   
   change_management:
     prefer_incremental: true
+    implement_incrementally: true
+    commit_per_change: true
+    commit_style: "small atomic commits with descriptive messages"
     max_changes_per_response: 3
     suggest_phased_approach: true
     warn_on_large_refactors: true

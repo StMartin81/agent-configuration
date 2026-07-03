@@ -51,7 +51,7 @@ behavior:
   
   code_style:
     prefer_small_functions: true
-    max_function_length: 50
+    max_function_length: 100 # allowed to be larger if splitting is not reasonable
     prefer_readable_names: true
     avoid_nesting: true
     max_nesting_depth: 3

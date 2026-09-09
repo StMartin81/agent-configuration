@@ -45,6 +45,7 @@ behavior:
         - "Use `rtk discover` directly to find missed RTK opportunities."
         - "Use `rtk proxy <cmd>` directly to run unfiltered commands while tracking usage."
     jujutsu_diff: "When inspecting changes in a Jujutsu repository, use `jj diff --git` so the diff is emitted in Git format."
+    jujutsu_stale: "If a Jujutsu workspace is in a stale state, run `jj workspace update-stale`."
 
   contradiction:
     enabled: true

@@ -31,7 +31,20 @@ agent:
 
 behavior:
   tooling:
-    jujutsu_diff: "Use `jj diff --git` to retrieve diffs in Jujutsu repositories."
+    shell_commands:
+      rule: "Always prefix shell commands with `rtk` to filter and compress output."
+      examples:
+        - "Use `rtk git status` instead of `git status`."
+        - "Use `rtk git log -10` instead of `git log -10`."
+        - "Use `rtk cargo test` instead of `cargo test`."
+        - "Use `rtk docker ps` instead of `docker ps`."
+        - "Use `rtk kubectl pods` instead of `kubectl get pods`."
+      meta_commands:
+        - "Use `rtk gain` directly for the token savings dashboard."
+        - "Use `rtk gain --history` directly for per-command savings history."
+        - "Use `rtk discover` directly to find missed RTK opportunities."
+        - "Use `rtk proxy <cmd>` directly to run unfiltered commands while tracking usage."
+    jujutsu_diff: "When inspecting changes in a Jujutsu repository, use `jj diff --git` so the diff is emitted in Git format."
 
   contradiction:
     enabled: true

@@ -47,6 +47,9 @@ behavior:
     jujutsu_diff: "When inspecting changes in a Jujutsu repository, use `jj diff --git` so the diff is emitted in Git format."
     jujutsu_stale: "If a Jujutsu workspace is in a stale state, run `jj workspace update-stale`."
     jujutsu_hooks: "Before committing any changes in Jujutsu, run `jj-hooks run`."
+    ctx_execute_file: |
+      When using `ctx_execute_file`, never call it with an `action` field (for example, `{ "action": "read", "path": "..." }`).
+      Always provide `path`, `language: "python"`, and `code: "print(FILE_CONTENT)"` when reading a file.
 
   contradiction:
     enabled: true

@@ -48,6 +48,7 @@ behavior:
     jujutsu_show: "Always use the `--git` option when running `jj show` (e.g. `jj show --git`) so the show output and diff are emitted in Git format."
     jujutsu_stale: "If a Jujutsu workspace is in a stale state, run `jj workspace update-stale`."
     jujutsu_hooks: "Before committing any changes in Jujutsu, run `jj-hooks run`."
+    matrix_documentation: "Matrix documentation is at https://matrix.neuroloop.de. Access it using the `matrix-cli` tool."
     ctx_execute_file: |
       When using `ctx_execute_file`, never call it with an `action` field (for example, `{ "action": "read", "path": "..." }`).
       Always provide `path`, `language: "python"`, and `code: "print(FILE_CONTENT)"` when reading a file.

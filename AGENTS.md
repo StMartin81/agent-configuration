@@ -44,7 +44,8 @@ behavior:
         - "Use `rtk gain --history` directly for per-command savings history."
         - "Use `rtk discover` directly to find missed RTK opportunities."
         - "Use `rtk proxy <cmd>` directly to run unfiltered commands while tracking usage."
-    jujutsu_diff: "When inspecting changes in a Jujutsu repository, use `jj diff --git` so the diff is emitted in Git format."
+    jujutsu_diff: "Always use the `--git` option when running `jj diff` (e.g. `jj diff --git`) so the diff is emitted in Git format."
+    jujutsu_show: "Always use the `--git` option when running `jj show` (e.g. `jj show --git`) so the show output and diff are emitted in Git format."
     jujutsu_stale: "If a Jujutsu workspace is in a stale state, run `jj workspace update-stale`."
     jujutsu_hooks: "Before committing any changes in Jujutsu, run `jj-hooks run`."
     ctx_execute_file: |

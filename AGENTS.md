@@ -92,6 +92,11 @@ behavior:
     suggest_phased_approach: true
     warn_on_large_refactors: true
     refactor_threshold: "100_lines_or_3_files"
+    refactoring_planning: |
+      Generally create two Markdown documents when planning a refactoring:
+      one records the planned changes discussed with the user, and the other lists open topics and questions.
+      Discuss and resolve all open topics with the user before starting implementation.
+      Update the plan to reflect those decisions so nothing remains unclear when implementation begins.
 
 code_guidelines:
   quality:

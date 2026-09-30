@@ -49,6 +49,63 @@ behavior:
     jujutsu_stale: "If a Jujutsu workspace is in a stale state, run `jj workspace update-stale`."
     jujutsu_hooks: "Before committing any changes in Jujutsu, run `jj-hooks run`."
     matrix_documentation: "Matrix documentation is at https://matrix.neuroloop.de. Access it using the `matrix-cli` tool."
+    github_pr_comments: |
+      Our GitHub Enterprise instance is https://code.bbraun.io. Use the `gh`
+      CLI for PR access and commenting, not browser automation. Prefix commands
+      with `rtk proxy` and specify `--hostname code.bbraun.io` for `gh api`.
+      Use the repository from the PR URL; `neuroloop/aegis` is an example,
+      not a default for every PR.
+
+      Authentication:
+      - Check access with `rtk proxy gh auth status --hostname code.bbraun.io`.
+      - Let `gh` use its configured credentials. Git credentials alone do not
+        establish GitHub API access. Never print tokens or embed them in URLs,
+        payloads, documentation, or commits. If credentials must be supplied,
+        use approved secret management; do not expose `gh auth token` output.
+
+      Preparation (read-only until the user authorizes posting):
+      - Retrieve the PR with:
+        `rtk proxy gh api --hostname code.bbraun.io repos/OWNER/REPO/pulls/NUMBER`.
+      - Retrieve changed files, existing inline comments, and reviews using the
+        same command with these endpoint suffixes and `--paginate`:
+        `/files?per_page=100`, `/comments?per_page=100`, `/reviews?per_page=100`.
+      - Parse every page. Record the actual PR head SHA and inspect its patches;
+        local bookmarks or working-copy changes may not be in the PR.
+      - Keep each comment concise: identify the defect, its impact, and the
+        requested correction. Anchor it to the relevant changed code. Use
+        `side: RIGHT` for current/added lines and `side: LEFT` for deleted lines.
+        If an affected file is unchanged, anchor to the related change and name
+        the unchanged file in the body. Do not invent an un-commentable anchor.
+      - Combine overlapping findings and avoid duplicating existing threads.
+        Reply to an existing thread when appropriate instead of opening another.
+      - Recheck the head SHA and existing comments immediately before posting.
+        If the head changed, reassess findings and remap anchors first.
+
+      Posting an inline review:
+      - Planning does not authorize posting. Once authorized, create one pending
+        review with `commit_id` set to the verified PR head and a `comments`
+        array. Each comment contains `path`, `line`, `side`, and `body`.
+      - Save the JSON payload to a temporary file outside the repository, then run:
+        `rtk proxy gh api --hostname code.bbraun.io --method POST
+        repos/OWNER/REPO/pulls/NUMBER/reviews --input /tmp/review-payload.json`.
+        Omit `event` to keep the review pending until verification.
+      - Preserve the returned review ID. Retrieve
+        `repos/OWNER/REPO/pulls/NUMBER/reviews/REVIEW_ID/comments?per_page=100`
+        and verify comment count, bodies, and anchors before submission.
+        Some Enterprise responses use legacy `position`/`original_position`
+        without `line`/`side`; verify the target using the returned `diff_hunk`
+        and the PR patch rather than assuming null fields mean failure.
+      - Submit via `POST repos/OWNER/REPO/pulls/NUMBER/reviews/REVIEW_ID/events`
+        with `-f event=COMMENT` (or an explicitly authorized/approved-plan
+        `REQUEST_CHANGES` or `APPROVE`) and an optional concise `-f body=...`.
+        Do not infer approval or merge authorization from permission to comment.
+      - For a reply, use `POST
+        repos/OWNER/REPO/pulls/NUMBER/comments/COMMENT_ID/replies` with a body.
+      - If a mutation fails or its outcome is uncertain, inspect existing
+        reviews/comments before retrying; never blindly create duplicates.
+      - Read the submitted review and comments back. Confirm the final state,
+        posted count, and anchors, then report the review URL. If maintaining a
+        local posting plan, update it with the verified result.
     ctx_execute_file: |
       When using `ctx_execute_file`, never call it with an `action` field (for example, `{ "action": "read", "path": "..." }`).
       Always provide `path`, `language: "python"`, and `code: "print(FILE_CONTENT)"` when reading a file.

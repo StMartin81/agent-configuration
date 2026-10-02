@@ -223,6 +223,19 @@ code_guidelines:
       explicit recovery decisions. Avoid redundant logging or aggregation of
       errors that the caller does not need.
 
+      Do not attach an error payload to every failure-state variant automatically.
+      When the variant alone determines the caller's next action, and the
+      underlying cause has already been logged at the appropriate boundary,
+      prefer a state-only variant if callers do not otherwise need that cause.
+
+      Retain diagnostic payloads when callers need them for meaningful reporting,
+      propagation, or additional decisions. Passing an already-logged error
+      through several layers merely to print it again or discard it is not
+      sufficient reason to retain it.
+
+      Choose a deliberate diagnostic reporting boundary. Do not indiscriminately
+      log and discard errors that callers still need.
+
       Operation-specific failure results may legitimately own recoverable state.
       The restriction is against hiding that state in a general error abstraction,
       not against returning ownership on failure.

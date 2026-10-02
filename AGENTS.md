@@ -169,6 +169,30 @@ code_guidelines:
     follow_conventions: enforce
     handle_errors: enforce
     validate_inputs: enforce
+    explicit_control_flow: |
+      Prefer explicit control flow over one-off higher-order wrappers.
+
+      Call concrete operations directly and inspect their returned results.
+      Keep success, failure, cleanup, and retry decisions visible at the call site,
+      normally using match, if let, or straightforward sequential code.
+
+      Do not introduce generic wrappers that execute an operation through a
+      callback or future parameter merely to handle its result. Prefer explicit
+      local control flow when the wrapper has only one production use or makes
+      the execution order harder to follow.
+
+      Extract helpers for meaningful, named operations, not merely to hide
+      branching. For example, prepare_connection() is appropriate; a one-off
+      rollback_on_error(prepare_connection(), cleanup) wrapper should normally
+      be replaced by a direct call followed by an explicit result match.
+
+      Higher-order helpers remain appropriate when required by an API or when
+      they provide demonstrated reuse or a clear concurrency/cancellation
+      abstraction. Testability alone does not justify adding production
+      indirection.
+
+      When choosing between fewer lines and clearer execution flow, prefer
+      clearer execution flow.
   
   warnings:
     complex_logic: true

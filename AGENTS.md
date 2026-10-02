@@ -193,6 +193,43 @@ code_guidelines:
 
       When choosing between fewer lines and clearer execution flow, prefer
       clearer execution flow.
+    separate_diagnostics_from_recovery_state: |
+      Separate diagnostic errors from recovery state.
+
+      When failures leave different resource states or require different next
+      actions, represent those differences explicitly at the operation boundary.
+      The caller should be able to decide what to do by matching the returned
+      outcome, without traversing nested error causes.
+
+      Keep general-purpose error types focused on describing failures. Do not
+      hide resource ownership, cleanup handles, or asynchronous recovery behavior
+      inside diagnostic errors. Return actionable recovery state through a
+      meaningful, operation-specific outcome or handle, and let the caller invoke
+      that operation directly.
+
+      Distinguish, where applicable:
+      - Failure with no cleanup remaining.
+      - Failure requiring cleanup, with the necessary resource still owned.
+      - Unconfirmed or unrecoverable state where the proposed recovery action
+        cannot actually be performed.
+
+      Offer retry only when a real retry operation and the required ownership
+      are available. Do not route an error into recovery merely because its state
+      is uncertain, or repeatedly return another error without performing useful
+      work.
+
+      Log diagnostic details at the appropriate handling boundary. Retain nested
+      causes when they provide useful reporting context, not as a substitute for
+      explicit recovery decisions. Avoid redundant logging or aggregation of
+      errors that the caller does not need.
+
+      Operation-specific failure results may legitimately own recoverable state.
+      The restriction is against hiding that state in a general error abstraction,
+      not against returning ownership on failure.
+
+      Use the simplest existing result/error representation that makes the action
+      clear. Do not introduce additional outcome types when existing variants
+      already express the required distinction.
   
   warnings:
     complex_logic: true

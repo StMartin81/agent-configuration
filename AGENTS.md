@@ -48,7 +48,8 @@ behavior:
     jujutsu_diff: "Always use the `--git` option when running `jj diff` (e.g. `jj diff --git`) so the diff is emitted in Git format."
     jujutsu_show: "Always use the `--git` option when running `jj show` (e.g. `jj show --git`) so the show output and diff are emitted in Git format."
     jujutsu_stale: "If a Jujutsu workspace is in a stale state, run `jj workspace update-stale`."
-    jujutsu_hooks: "Before committing any changes in Jujutsu, run `jj-hooks run`."
+    repository_commands: "Before running `git` or `jj` commands, verify that the target folder belongs to that repository. If it is a Git-colocated Jujutsu repository, prefer `jj` commands."
+    jujutsu_hooks: "Before committing any changes in Jujutsu, run `DEV_TOOLS_DIR=\"$(jj root)/dev-tools\" jj-hooks run --all-files` in the root of the jj repository."
     matrix_documentation: "Matrix documentation is at <https://matrix.neuroloop.de>. Access it using the `matrix-cli` tool."
     github_pr_comments: |
       Our GitHub Enterprise instance is <https://code.bbraun.io>. Use the `gh`

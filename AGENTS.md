@@ -34,6 +34,7 @@ behavior:
   tooling:
     shell_commands:
       rule: "Always prefix shell commands with `rtk` to filter and compress output."
+      markdown_documentation: "When writing Markdown documentation, omit `rtk proxy` from command-line examples and show the underlying command. `rtk proxy` is only an execution-time wrapper for compacting command output, not part of the command readers should run."
       examples:
         - "Use `rtk git status` instead of `git status`."
         - "Use `rtk git log -10` instead of `git log -10`."
